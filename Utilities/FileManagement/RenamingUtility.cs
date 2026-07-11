@@ -28,7 +28,8 @@
                 }
 
                 newFileName = fileDate.ToString("yyyy-MM-dd HH_mm_ss");
-                string newFilePath = Path.Combine(Path.GetDirectoryName(file), newFileName + Path.GetExtension(file));
+                // file comes from Directory.EnumerateFiles, so it always has a directory component.
+                string newFilePath = Path.Combine(Path.GetDirectoryName(file)!, newFileName + Path.GetExtension(file));
                 int conflictCounter = 0;
                 while (File.Exists(newFilePath))
                 {
@@ -38,7 +39,7 @@
                     {
                         fileDate = incrementedDate;
                         newFileName = fileDate.ToString("yyyy-MM-dd HH_mm_ss");
-                        newFilePath = Path.Combine(Path.GetDirectoryName(file), newFileName + Path.GetExtension(file));
+                        newFilePath = Path.Combine(Path.GetDirectoryName(file)!, newFileName + Path.GetExtension(file));
                     }
                     else if (conflictCounter >= 59)
                     {
