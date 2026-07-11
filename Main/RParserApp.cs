@@ -43,7 +43,7 @@ namespace EXIFDataParser.Main
         private void RenameFiles()
         {
             Console.WriteLine("Enter the folder path:");
-            string folderPath = Console.ReadLine();
+            string? folderPath = Console.ReadLine();
 
             if (!System.IO.Directory.Exists(folderPath))
             {
@@ -52,8 +52,7 @@ namespace EXIFDataParser.Main
             }
 
             Console.WriteLine("Do you want to recheck all file names? (y/n)");
-            string recheckChoice = Console.ReadLine();
-            bool recheckAllFiles = recheckChoice.ToLower() == "y";
+            bool recheckAllFiles = Console.ReadLine()?.ToLower() == "y";
 
             _originalFileNames = new Dictionary<string, string>();
             _renamedFilesCount = Utilities.FileManagement.RenamingUtility.RenameFilesBasedOnExifDate(folderPath, _originalFileNames, recheckAllFiles);
@@ -61,9 +60,7 @@ namespace EXIFDataParser.Main
             if (_renamedFilesCount > 0)
             {
                 Console.WriteLine("Do you want to undo renaming? (y/n)");
-                string undoChoice = Console.ReadLine();
-
-                if (undoChoice.ToLower() == "y")
+                if (Console.ReadLine()?.ToLower() == "y")
                 {
                     UndoRenaming();
                 }
@@ -71,7 +68,10 @@ namespace EXIFDataParser.Main
         }
         private void UndoRenaming()
         {
-            Utilities.FileManagement.UndoRenamingUtility.UndoRenaming(_originalFileNames);
+            if (_originalFileNames is not null)
+            {
+                Utilities.FileManagement.UndoRenamingUtility.UndoRenaming(_originalFileNames);
+            }
         }
     }
 }
